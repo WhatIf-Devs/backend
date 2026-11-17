@@ -1,0 +1,342 @@
+{
+  "_note": "AI API(02·03·04)의 최종 응답 예시. 공통 응답 형태를 따름. 계산 값은 참조 엔진, 답변은 검증을 통과한 예시 문장. '답변 검증 실패'는 answerText·summaryText가 null로 가는 경우(프론트 폴백).",
+  "examples": [
+    {
+      "name": "02 change",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "change",
+          "answerText": "다음 달부터 월 50만원씩 모으면 12개월 뒤 1,050만원이에요. 기존보다 120만원 많아요. 이자·세금은 반영하지 않았어요.",
+          "summaryText": "월 저축을 10만원 늘리면 목표를 50만원 넘겨요.",
+          "newCondition": {
+            "startMonth": "2026-11",
+            "periodMonths": 12,
+            "currentAsset": 500,
+            "monthlySaving": 50,
+            "events": [
+              {
+                "id": "ev-1",
+                "name": "성과급",
+                "type": "income",
+                "amount": 100,
+                "month": "2027-02",
+                "repeat": "once"
+              },
+              {
+                "id": "ev-2",
+                "name": "노트북 구입",
+                "type": "expense",
+                "amount": 150,
+                "month": "2027-05",
+                "repeat": "once"
+              }
+            ],
+            "goal": {
+              "name": "유럽 여행",
+              "amount": 1000,
+              "deadline": "2027-11"
+            }
+          },
+          "result": {
+            "series": [
+              500,
+              550,
+              600,
+              750,
+              800,
+              850,
+              750,
+              800,
+              850,
+              900,
+              950,
+              1000,
+              1050
+            ],
+            "summary": {
+              "finalAsset": 1050,
+              "increase": 550,
+              "totalSaving": 600,
+              "eventTotal": -50,
+              "goal": {
+                "assetAtDeadline": 1050,
+                "shortfall": -50,
+                "achievementRate": 105,
+                "extraSavingNeeded": null,
+                "reachedMonth": "2027-10",
+                "alreadyAchieved": false
+              },
+              "negativeAsset": null,
+              "milestones": {
+                "after1Year": 1050,
+                "after5Years": 3450
+              }
+            },
+            "warnings": []
+          },
+          "v1Result": {
+            "finalAsset": 930,
+            "goalShortfall": 70
+          },
+          "versionCard": {
+            "no": 2,
+            "title": "월 50만원",
+            "baseVersionNo": 1
+          },
+          "usedAssumptions": [
+            "이자·세금 미반영",
+            "가정 기반"
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 change, 답변 검증 실패",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "change",
+          "answerText": null,
+          "summaryText": null,
+          "newCondition": {
+            "startMonth": "2026-11",
+            "periodMonths": 12,
+            "currentAsset": 500,
+            "monthlySaving": 50,
+            "events": [
+              {
+                "id": "ev-1",
+                "name": "성과급",
+                "type": "income",
+                "amount": 100,
+                "month": "2027-02",
+                "repeat": "once"
+              },
+              {
+                "id": "ev-2",
+                "name": "노트북 구입",
+                "type": "expense",
+                "amount": 150,
+                "month": "2027-05",
+                "repeat": "once"
+              }
+            ],
+            "goal": {
+              "name": "유럽 여행",
+              "amount": 1000,
+              "deadline": "2027-11"
+            }
+          },
+          "result": {
+            "series": [
+              500,
+              550,
+              600,
+              750,
+              800,
+              850,
+              750,
+              800,
+              850,
+              900,
+              950,
+              1000,
+              1050
+            ],
+            "summary": {
+              "finalAsset": 1050,
+              "increase": 550,
+              "totalSaving": 600,
+              "eventTotal": -50,
+              "goal": {
+                "assetAtDeadline": 1050,
+                "shortfall": -50,
+                "achievementRate": 105,
+                "extraSavingNeeded": null,
+                "reachedMonth": "2027-10",
+                "alreadyAchieved": false
+              },
+              "negativeAsset": null,
+              "milestones": {
+                "after1Year": 1050,
+                "after5Years": 3450
+              }
+            },
+            "warnings": []
+          },
+          "v1Result": {
+            "finalAsset": 930,
+            "goalShortfall": 70
+          },
+          "versionCard": {
+            "no": 2,
+            "title": "월 50만원",
+            "baseVersionNo": 1
+          },
+          "usedAssumptions": [
+            "이자·세금 미반영",
+            "가정 기반"
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 explain",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "explain",
+          "answerText": "5월에 노트북 구입 150만원이 빠져서 자산이 잠시 줄어요.",
+          "highlightMonths": [
+            "2027-05"
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 explain term",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "explain",
+          "answerText": "단리는 처음 넣은 돈에만 이자가 붙는 방식이에요. 복리는 붙은 이자에도 다시 이자가 붙는 방식이에요.",
+          "highlightMonths": []
+        }
+      }
+    },
+    {
+      "name": "02 clarify",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "clarify",
+          "answerText": "몇 개월 앞당길까요?",
+          "options": [
+            {
+              "label": "1개월",
+              "question": "목표 기한을 1개월 앞당기면?"
+            },
+            {
+              "label": "2개월",
+              "question": "목표 기한을 2개월 앞당기면?"
+            },
+            {
+              "label": "3개월",
+              "question": "목표 기한을 3개월 앞당기면?"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 finance",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "finance",
+          "answerText": "지금 조건으로 가입할 수 있는 공시 상품을 정리했어요. 추천이 아니라 비교용 정보예요.",
+          "productQuery": {
+            "type": "deposit",
+            "termMonths": 12,
+            "amountMax": 500,
+            "monthlyAmount": null,
+            "sort": "maxRate",
+            "limit": 3
+          }
+        }
+      }
+    },
+    {
+      "name": "02 refuse",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_1",
+        "message": "답변을 만들었습니다.",
+        "result": {
+          "type": "refuse",
+          "answerText": "저는 입력하신 계획을 계산해서 설명해 드려요. 이런 질문은 어떠세요?",
+          "examples": [
+            "월 10만원 더 모으면?",
+            "목표를 2개월 앞당기려면?",
+            "5월에 왜 돈이 줄어?"
+          ]
+        }
+      }
+    },
+    {
+      "name": "02 검증 에러 (versions 조건, 첫 번째 하나만)",
+      "response": {
+        "isSuccess": false,
+        "code": "CONDITION400_3",
+        "message": "현재 자산은 0~100,000만원으로 입력해 주세요.",
+        "result": null
+      }
+    },
+    {
+      "name": "02 형식 오류",
+      "response": {
+        "isSuccess": false,
+        "code": "COMMON400_1",
+        "message": "잘못된 요청이에요.",
+        "result": null
+      }
+    },
+    {
+      "name": "02 AI 오류",
+      "response": {
+        "isSuccess": false,
+        "code": "AI503_1",
+        "message": "일시적인 오류로 요청을 처리하지 못했어요. 다시 한 번 물어봐 주시겠어요?",
+        "result": null
+      }
+    },
+    {
+      "name": "03 summary",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_2",
+        "message": "요약을 만들었습니다.",
+        "result": {
+          "text": "5월 노트북 구입 때문에 목표에 70만원 모자라요.",
+          "usedAssumptions": [
+            "이자·세금 미반영",
+            "가정 기반"
+          ]
+        }
+      }
+    },
+    {
+      "name": "04 scenario-name",
+      "response": {
+        "isSuccess": true,
+        "code": "AI200_3",
+        "message": "이름을 제안했습니다.",
+        "result": {
+          "suggestedName": "월 10만원 더 모으기"
+        }
+      }
+    },
+    {
+      "name": "04 에러",
+      "response": {
+        "isSuccess": false,
+        "code": "AI400_4",
+        "message": "이름 제안 정보가 올바르지 않아요.",
+        "result": null
+      }
+    }
+  ]
+}

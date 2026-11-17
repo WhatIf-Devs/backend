@@ -1,0 +1,15 @@
+{
+  "type": "OBJECT",
+  "properties": {
+    "answerText": {
+      "type": "STRING"
+    },
+    "summaryText": {
+      "type": "STRING"
+    }
+  },
+  "required": [
+    "answerText",
+    "summaryText"
+  ]
+}

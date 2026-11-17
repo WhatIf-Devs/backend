@@ -1,0 +1,481 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "whatif/ai-interpret.output.schema.json",
+  "title": "InterpretOutput",
+  "description": "API 02 1단계(Gemini 해석) 출력. 서버가 이것을 기준 버전 조건에 적용하고 범위를 재검증한다. type에 해당하지 않는 객체는 null.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "change",
+    "explain",
+    "clarify",
+    "finance",
+    "refuse"
+  ],
+  "properties": {
+    "type": {
+      "enum": [
+        "change",
+        "explain",
+        "clarify",
+        "finance",
+        "refuse"
+      ]
+    },
+    "change": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "fromVersionNo",
+        "monthlySaving",
+        "events",
+        "goal",
+        "periodMonths",
+        "solveFor"
+      ],
+      "properties": {
+        "fromVersionNo": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 10,
+          "description": "질문이 다른 버전을 명시할 때만. null이면 요청의 baseVersionNo (BE 확인 필요)"
+        },
+        "monthlySaving": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "value"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "delta",
+                "absolute"
+              ]
+            },
+            "value": {
+              "type": "integer",
+              "minimum": -1000,
+              "maximum": 1000
+            }
+          }
+        },
+        "events": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "op"
+            ],
+            "properties": {
+              "op": {
+                "enum": [
+                  "add",
+                  "update",
+                  "delete"
+                ]
+              },
+              "eventId": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "update·delete: 기준 버전 events[].id. add는 null(id는 서버가 생성)"
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 20
+              },
+              "type": {
+                "enum": [
+                  "income",
+                  "expense",
+                  null
+                ]
+              },
+              "amount": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "maximum": 100000
+              },
+              "month": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "repeat": {
+                "enum": [
+                  "once",
+                  "monthly",
+                  null
+                ]
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "op": {
+                      "const": "add"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "eventId": {
+                      "type": "null"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "integer"
+                    },
+                    "month": {
+                      "type": "string"
+                    },
+                    "repeat": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "op": {
+                      "enum": [
+                        "update",
+                        "delete"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "eventId"
+                  ],
+                  "properties": {
+                    "eventId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "goal": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "op"
+          ],
+          "properties": {
+            "op": {
+              "enum": [
+                "set",
+                "update",
+                "remove"
+              ]
+            },
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 20
+            },
+            "amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "deadline": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        "periodMonths": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 6,
+          "maximum": 120
+        },
+        "solveFor": {
+          "enum": [
+            "monthlySaving",
+            null
+          ],
+          "description": "목표 역산. 엔진이 월 저축을 구한다 (BE 확인 필요)"
+        }
+      }
+    },
+    "explain": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "versionNos",
+        "term"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "result",
+            "term"
+          ]
+        },
+        "versionNos": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "maxItems": 10
+        },
+        "term": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 20
+        }
+      }
+    },
+    "clarify": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "answerText",
+        "options"
+      ],
+      "properties": {
+        "answerText": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "question"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 12
+              },
+              "question": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            }
+          }
+        }
+      }
+    },
+    "finance": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "productType",
+        "termMonths",
+        "sort"
+      ],
+      "properties": {
+        "productType": {
+          "enum": [
+            "deposit",
+            "saving",
+            null
+          ]
+        },
+        "termMonths": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 120
+        },
+        "sort": {
+          "enum": [
+            "maxRate",
+            "baseRate",
+            "term",
+            null
+          ]
+        }
+      }
+    },
+    "refuse": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "enum": [
+            "investment",
+            "product_pick",
+            "spending_advice",
+            "unrelated",
+            "prompt_injection"
+          ]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "change"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "change": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "explain"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "explain": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "clarify"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "clarify": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "finance"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "finance": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "refuse"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "refuse": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ]
+}

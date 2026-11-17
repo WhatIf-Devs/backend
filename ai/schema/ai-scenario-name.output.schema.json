@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "whatif/ai-scenario-name.output.schema.json",
+  "title": "ScenarioNameOutput",
+  "description": "API 04 result.suggestedName",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "suggestedName"
+  ],
+  "properties": {
+    "suggestedName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    }
+  }
+}

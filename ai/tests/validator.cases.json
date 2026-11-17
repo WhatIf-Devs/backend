@@ -1,0 +1,521 @@
+{
+  "_note": "숫자·표현 검증기 단위 테스트. allowed는 서버가 AI 입력에서 만든 허용 숫자 집합(tests/reference/validate_answer.py allowed_from_input).",
+  "forbiddenPhrases": [
+    "반드시",
+    "무조건",
+    "확실히",
+    "추천",
+    "가장 좋은",
+    "1위",
+    "보장",
+    "투자하"
+  ],
+  "cases": [
+    {
+      "id": 1,
+      "kind": "change.answerText",
+      "answer": "다음 달부터 월 50만원씩 모으면 12개월 뒤 1,050만원이에요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": true,
+      "expectedReasonPrefixes": []
+    },
+    {
+      "id": 2,
+      "kind": "change.answerText",
+      "answer": "기존보다 120만원 더 쌓이고 목표를 50만원 넘겨요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": true,
+      "expectedReasonPrefixes": []
+    },
+    {
+      "id": 3,
+      "kind": "change.answerText",
+      "answer": "기존보다 130만원 더 쌓여요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "amount_mismatch"
+      ]
+    },
+    {
+      "id": 4,
+      "kind": "summary",
+      "answer": "5월 노트북 구입 때문에 목표에 70만원 모자라요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          40,
+          50,
+          70,
+          150,
+          430,
+          480,
+          500,
+          930,
+          1000,
+          2850
+        ],
+        "percents": [
+          93
+        ],
+        "months": [
+          "2027-05",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "expectedPass": true,
+      "expectedReasonPrefixes": []
+    },
+    {
+      "id": 5,
+      "kind": "summary",
+      "answer": "매달 약 5만 8천원 더 모으면 목표에 닿아요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          40,
+          50,
+          70,
+          150,
+          430,
+          480,
+          500,
+          930,
+          1000,
+          2850
+        ],
+        "percents": [
+          93
+        ],
+        "months": [
+          "2027-05",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "expectedPass": true,
+      "expectedReasonPrefixes": []
+    },
+    {
+      "id": 6,
+      "kind": "change.answerText",
+      "answer": "연 3% 이자를 받으면 더 늘어요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "percent_not_allowed",
+        "interest_mention"
+      ]
+    },
+    {
+      "id": 7,
+      "kind": "change.summaryText",
+      "answer": "반드시 목표를 달성해요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "forbidden_phrase"
+      ]
+    },
+    {
+      "id": 8,
+      "kind": "summary",
+      "answer": "12월에 자산이 줄어요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          40,
+          50,
+          70,
+          150,
+          430,
+          480,
+          500,
+          930,
+          1000,
+          2850
+        ],
+        "percents": [
+          93
+        ],
+        "months": [
+          "2027-05",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "month_mismatch"
+      ]
+    },
+    {
+      "id": 9,
+      "kind": "change.answerText",
+      "answer": "목표 달성률은 105%예요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": true,
+      "expectedReasonPrefixes": []
+    },
+    {
+      "id": 10,
+      "kind": "change.answerText",
+      "answer": "목표 달성률은 100%예요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "percent_not_allowed"
+      ]
+    },
+    {
+      "id": 11,
+      "kind": "change.answerText",
+      "answer": "매달 10만원 더 모으세요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "imperative"
+      ]
+    },
+    {
+      "id": 12,
+      "kind": "change.summaryText",
+      "answer": "2028년에는 더 많아져요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "year_mismatch"
+      ]
+    },
+    {
+      "id": 13,
+      "kind": "explainTerm",
+      "answer": "복리는 이자에 다시 이자가 붙어요. 예를 들어 연 3%면 더 늘어요.",
+      "allowed": {},
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "number_in_term"
+      ]
+    },
+    {
+      "id": 14,
+      "kind": "scenarioName",
+      "answer": "추천 저축 플랜",
+      "allowed": {},
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "forbidden_phrase"
+      ]
+    },
+    {
+      "id": 15,
+      "kind": "change.answerText",
+      "answer": "V3보다 120만원 많아요.",
+      "allowed": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "expectedPass": false,
+      "expectedReasonPrefixes": [
+        "version_mismatch"
+      ]
+    }
+  ]
+}

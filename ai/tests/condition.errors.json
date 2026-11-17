@@ -1,0 +1,310 @@
+{
+  "_note": "공통 규칙: 검증 에러는 필드별 코드 하나(첫 번째)만. 확인된 코드는 CONDITION400_3(현재 자산)·CONDITION400_12(목표 기한)이고 나머지 번호는 필드 순서로 추정(simulate.py CONDITION_CODES).",
+  "codes": [
+    {
+      "code": "CONDITION400_1",
+      "field": "startMonth",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_2",
+      "field": "periodMonths",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_3",
+      "field": "currentAsset",
+      "message": "현재 자산은 0~100,000만원으로 입력해 주세요.",
+      "confirmed": true
+    },
+    {
+      "code": "CONDITION400_4",
+      "field": "monthlySaving",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_5",
+      "field": "events[].name",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_6",
+      "field": "events[].type",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_7",
+      "field": "events[].amount",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_8",
+      "field": "events[].month",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_9",
+      "field": "events[].repeat",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_10",
+      "field": "goal.name",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_11",
+      "field": "goal.amount",
+      "message": null,
+      "confirmed": false
+    },
+    {
+      "code": "CONDITION400_12",
+      "field": "goal.deadline",
+      "message": "목표 기한이 계산 기간을 벗어나요.",
+      "confirmed": true
+    }
+  ],
+  "cases": [
+    {
+      "name": "정상",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": null
+    },
+    {
+      "name": "현재 자산 음수",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": -1,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": "CONDITION400_3"
+    },
+    {
+      "name": "현재 자산 초과",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 100001,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": "CONDITION400_3"
+    },
+    {
+      "name": "목표 기한이 기간 밖",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2028-05"
+        }
+      },
+      "expect": "CONDITION400_12"
+    },
+    {
+      "name": "둘 다 틀림 → 첫 번째(현재 자산)만",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": -1,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2028-05"
+        }
+      },
+      "expect": "CONDITION400_3"
+    },
+    {
+      "name": "월 저축 초과",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 1001,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": "CONDITION400_4"
+    },
+    {
+      "name": "이벤트 금액 0",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 0,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": "CONDITION400_7"
+    }
+  ]
+}
