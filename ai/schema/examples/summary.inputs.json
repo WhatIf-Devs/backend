@@ -1,0 +1,203 @@
+{
+  "_note": "API 03 한줄요약의 AI 입력 예시. 서버가 조건으로 다시 계산하고 topDriver를 고른다(tests/reference/simulate.py top_driver, 제안 규칙).",
+  "examples": [
+    {
+      "name": "목표 부족",
+      "input": {
+        "situation": "goal_short",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        },
+        "summary": {
+          "finalAsset": 930,
+          "increase": 430,
+          "totalSaving": 480,
+          "eventTotal": -50,
+          "goal": {
+            "assetAtDeadline": 930,
+            "shortfall": 70,
+            "achievementRate": 93,
+            "extraSavingNeeded": 5.8,
+            "reachedMonth": null,
+            "alreadyAchieved": false
+          },
+          "negativeAsset": null,
+          "milestones": {
+            "after1Year": 930,
+            "after5Years": 2850
+          }
+        },
+        "topDriver": {
+          "kind": "event",
+          "name": "노트북 구입",
+          "month": "2027-05",
+          "amount": -150,
+          "repeat": "once",
+          "impact": -150
+        }
+      },
+      "sampleOutput": {
+        "text": "5월 노트북 구입 때문에 목표에 70만원 모자라요."
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          5.8,
+          40,
+          50,
+          70,
+          150,
+          430,
+          480,
+          500,
+          930,
+          1000,
+          2850
+        ],
+        "percents": [
+          93
+        ],
+        "months": [
+          "2027-05",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "sampleCheck": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "name": "목표 초과",
+      "input": {
+        "situation": "goal_excess",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 50,
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        },
+        "summary": {
+          "finalAsset": 1050,
+          "increase": 550,
+          "totalSaving": 600,
+          "eventTotal": -50,
+          "goal": {
+            "assetAtDeadline": 1050,
+            "shortfall": -50,
+            "achievementRate": 105,
+            "extraSavingNeeded": null,
+            "reachedMonth": "2027-10",
+            "alreadyAchieved": false
+          },
+          "negativeAsset": null,
+          "milestones": {
+            "after1Year": 1050,
+            "after5Years": 3450
+          }
+        },
+        "topDriver": {
+          "kind": "saving",
+          "name": "월 저축",
+          "month": null,
+          "amount": 50,
+          "repeat": "monthly",
+          "impact": 600
+        }
+      },
+      "sampleOutput": {
+        "text": "매달 50만원씩 모아서 목표를 50만원 넘겨요."
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          50,
+          500,
+          550,
+          600,
+          1000,
+          1050,
+          3450
+        ],
+        "percents": [
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "sampleCheck": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "name": "목표 없음",
+      "input": {
+        "situation": "no_goal",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "goal": null,
+        "summary": {
+          "finalAsset": 930,
+          "increase": 430,
+          "totalSaving": 480,
+          "eventTotal": -50,
+          "goal": null,
+          "negativeAsset": null,
+          "milestones": {
+            "after1Year": 930,
+            "after5Years": 2850
+          }
+        },
+        "topDriver": {
+          "kind": "saving",
+          "name": "월 저축",
+          "month": null,
+          "amount": 40,
+          "repeat": "monthly",
+          "impact": 480
+        }
+      },
+      "sampleOutput": {
+        "text": "12개월 동안 매달 40만원 저축으로 930만원이 돼요."
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          40,
+          50,
+          430,
+          480,
+          500,
+          930,
+          2850
+        ],
+        "percents": [],
+        "months": [],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "sampleCheck": {
+        "pass": true,
+        "reasons": []
+      }
+    }
+  ]
+}

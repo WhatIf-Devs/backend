@@ -1,0 +1,201 @@
+{
+  "_note": "API 04 상황 이름 제안의 입력 예시. 질문과 조건에 있는 숫자만 허용.",
+  "examples": [
+    {
+      "input": {
+        "questions": [
+          "매달 10만원 더 모으면?"
+        ],
+        "condition": {
+          "startMonth": "2026-11",
+          "periodMonths": 12,
+          "currentAsset": 500,
+          "monthlySaving": 50,
+          "events": [
+            {
+              "id": "ev-1",
+              "name": "성과급",
+              "type": "income",
+              "amount": 100,
+              "month": "2027-02",
+              "repeat": "once"
+            },
+            {
+              "id": "ev-2",
+              "name": "노트북 구입",
+              "type": "expense",
+              "amount": 150,
+              "month": "2027-05",
+              "repeat": "once"
+            }
+          ],
+          "goal": {
+            "name": "유럽 여행",
+            "amount": 1000,
+            "deadline": "2027-11"
+          }
+        },
+        "currentName": "상황 1 · 지금처럼"
+      },
+      "sampleOutput": {
+        "suggestedName": "월 10만원 더 모으기"
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          50,
+          100,
+          150,
+          500,
+          1000,
+          10.0
+        ],
+        "percents": [],
+        "months": [
+          "2026-11",
+          "2027-02",
+          "2027-05",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "sampleCheck": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "input": {
+        "questions": [
+          "매달 10만원 더 모으면?",
+          "노트북을 내년 1월로 미루면?"
+        ],
+        "condition": {
+          "startMonth": "2026-11",
+          "periodMonths": 12,
+          "currentAsset": 500,
+          "monthlySaving": 50,
+          "events": [
+            {
+              "id": "ev-1",
+              "name": "성과급",
+              "type": "income",
+              "amount": 100,
+              "month": "2027-02",
+              "repeat": "once"
+            },
+            {
+              "id": "ev-2",
+              "name": "노트북 구입",
+              "type": "expense",
+              "amount": 150,
+              "month": "2027-01",
+              "repeat": "once"
+            }
+          ],
+          "goal": {
+            "name": "유럽 여행",
+            "amount": 1000,
+            "deadline": "2027-11"
+          }
+        },
+        "currentName": "상황 1 · 지금처럼"
+      },
+      "sampleOutput": {
+        "suggestedName": "월 10만원 더, 노트북 1월로"
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          50,
+          100,
+          150,
+          500,
+          1000,
+          10.0
+        ],
+        "percents": [],
+        "months": [
+          "2026-11",
+          "2027-01",
+          "2027-02",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": []
+      },
+      "sampleCheck": {
+        "pass": true,
+        "reasons": []
+      }
+    },
+    {
+      "input": {
+        "questions": [
+          "목표를 2개월 앞당기려면 매달 얼마 모아야 해?"
+        ],
+        "condition": {
+          "startMonth": "2026-11",
+          "periodMonths": 12,
+          "currentAsset": 500,
+          "monthlySaving": 55,
+          "events": [
+            {
+              "id": "ev-1",
+              "name": "성과급",
+              "type": "income",
+              "amount": 100,
+              "month": "2027-02",
+              "repeat": "once"
+            },
+            {
+              "id": "ev-2",
+              "name": "노트북 구입",
+              "type": "expense",
+              "amount": 150,
+              "month": "2027-05",
+              "repeat": "once"
+            }
+          ],
+          "goal": {
+            "name": "유럽 여행",
+            "amount": 1000,
+            "deadline": "2027-09"
+          }
+        },
+        "currentName": "상황 1 · 지금처럼"
+      },
+      "sampleOutput": {
+        "suggestedName": "유럽 여행 2개월 앞당기기"
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          55,
+          100,
+          150,
+          500,
+          1000
+        ],
+        "percents": [],
+        "months": [
+          "2026-11",
+          "2027-02",
+          "2027-05",
+          "2027-09"
+        ],
+        "periods": [
+          12,
+          2
+        ],
+        "versions": []
+      },
+      "sampleCheck": {
+        "pass": true,
+        "reasons": []
+      }
+    }
+  ]
+}

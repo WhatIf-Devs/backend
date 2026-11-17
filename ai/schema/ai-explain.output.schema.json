@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "whatif/ai-explain.output.schema.json",
+  "title": "ExplainOutput",
+  "description": "API 02 2단계 출력. mode change → answerText+summaryText, mode explainResult·explainTerm → answerText+highlightMonths",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "answerText",
+        "summaryText"
+      ],
+      "properties": {
+        "answerText": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "summaryText": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "answerText",
+        "highlightMonths"
+      ],
+      "properties": {
+        "answerText": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "highlightMonths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+          },
+          "maxItems": 6
+        }
+      }
+    }
+  ]
+}

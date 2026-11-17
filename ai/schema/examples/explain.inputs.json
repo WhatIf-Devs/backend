@@ -1,0 +1,464 @@
+{
+  "_note": "API 02 2단계(답변 작성) 입력 예시. 숫자는 모두 tests/reference/simulate.py로 계산. sampleOutput은 기대하는 답변의 예이고 sampleCheck는 검증기 결과.",
+  "examples": [
+    {
+      "name": "change 기본",
+      "input": {
+        "mode": "change",
+        "question": "매달 10만원 더 모으면?",
+        "changes": [
+          {
+            "field": "monthlySaving",
+            "from": 40,
+            "to": 50,
+            "delta": 10
+          }
+        ],
+        "periodMonths": 12,
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        },
+        "base": {
+          "versionNo": 1,
+          "finalAsset": 930,
+          "increase": 430,
+          "goal": {
+            "shortfall": 70,
+            "achievementRate": 93,
+            "reachedMonth": null,
+            "extraSavingNeeded": 5.8
+          },
+          "negativeAsset": null
+        },
+        "new": {
+          "versionNo": 2,
+          "finalAsset": 1050,
+          "increase": 550,
+          "goal": {
+            "shortfall": -50,
+            "achievementRate": 105,
+            "reachedMonth": "2027-10",
+            "extraSavingNeeded": null
+          },
+          "negativeAsset": null
+        },
+        "diff": {
+          "vsBase": 120,
+          "vsV1": 120
+        },
+        "solved": null
+      },
+      "sampleOutput": {
+        "answerText": "다음 달부터 월 50만원씩 모으면 12개월 뒤 1,050만원이에요. 기존보다 120만원 많아요.",
+        "summaryText": "월 저축을 10만원 늘리면 목표를 50만원 넘겨요."
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          5.8,
+          10,
+          40,
+          50,
+          70,
+          120,
+          430,
+          550,
+          930,
+          1000,
+          1050
+        ],
+        "percents": [
+          93,
+          105
+        ],
+        "months": [
+          "2027-10",
+          "2027-11"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "sampleCheck": {
+        "answerText": {
+          "pass": true,
+          "reasons": []
+        },
+        "summaryText": {
+          "pass": true,
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "change 목표 역산",
+      "input": {
+        "mode": "change",
+        "question": "목표를 2개월 앞당기려면 매달 얼마 모아야 해?",
+        "changes": [
+          {
+            "field": "goal.deadline",
+            "from": "2027-11",
+            "to": "2027-09",
+            "monthsToDeadline": 10
+          },
+          {
+            "field": "monthlySaving",
+            "from": 40,
+            "to": 55,
+            "delta": 15
+          }
+        ],
+        "periodMonths": 12,
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-09"
+        },
+        "base": {
+          "versionNo": 1,
+          "finalAsset": 930,
+          "increase": 430,
+          "goal": {
+            "shortfall": 70,
+            "achievementRate": 93,
+            "reachedMonth": null,
+            "extraSavingNeeded": 5.8
+          },
+          "negativeAsset": null
+        },
+        "new": {
+          "versionNo": 2,
+          "finalAsset": 1110,
+          "increase": 610,
+          "goal": {
+            "shortfall": 0,
+            "achievementRate": 100,
+            "reachedMonth": "2027-09",
+            "extraSavingNeeded": null
+          },
+          "negativeAsset": null
+        },
+        "diff": {
+          "vsBase": 180,
+          "vsV1": 180
+        },
+        "solved": {
+          "monthlySaving": 55
+        }
+      },
+      "sampleOutput": {
+        "answerText": "목표를 2027년 9월로 당기면 매달 55만원씩 모아야 1,000만원이 돼요. 기존보다 180만원 많아져요.",
+        "summaryText": "매달 55만원씩 모으면 9월에 목표에 닿아요."
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          0,
+          5.8,
+          10,
+          15,
+          40,
+          55,
+          70,
+          180,
+          430,
+          610,
+          930,
+          1000,
+          1110
+        ],
+        "percents": [
+          93,
+          100
+        ],
+        "months": [
+          "2027-09",
+          "2027-11"
+        ],
+        "periods": [
+          10,
+          12
+        ],
+        "versions": [
+          1,
+          2
+        ]
+      },
+      "sampleCheck": {
+        "answerText": {
+          "pass": true,
+          "reasons": []
+        },
+        "summaryText": {
+          "pass": true,
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "explainResult 한 버전",
+      "input": {
+        "mode": "explainResult",
+        "question": "5월에 왜 돈이 줄어?",
+        "versions": [
+          {
+            "versionNo": 1,
+            "title": "기존 플랜",
+            "periodMonths": 12,
+            "monthlySaving": 40,
+            "events": [
+              {
+                "name": "성과급",
+                "type": "income",
+                "amount": 100,
+                "month": "2027-02",
+                "repeat": "once"
+              },
+              {
+                "name": "노트북 구입",
+                "type": "expense",
+                "amount": 150,
+                "month": "2027-05",
+                "repeat": "once"
+              }
+            ],
+            "finalAsset": 930,
+            "increase": 430,
+            "goal": {
+              "shortfall": 70,
+              "achievementRate": 93,
+              "reachedMonth": null,
+              "extraSavingNeeded": 5.8
+            },
+            "negativeAsset": null,
+            "declines": [
+              {
+                "month": "2027-05",
+                "delta": -110
+              }
+            ]
+          }
+        ],
+        "diffs": []
+      },
+      "sampleOutput": {
+        "answerText": "5월에 노트북 구입 150만원이 빠져서 자산이 잠시 줄어요.",
+        "highlightMonths": [
+          "2027-05"
+        ]
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          5.8,
+          40,
+          70,
+          100,
+          110,
+          150,
+          430,
+          930
+        ],
+        "percents": [
+          93
+        ],
+        "months": [
+          "2027-02",
+          "2027-05"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          1
+        ]
+      },
+      "sampleCheck": {
+        "answerText": {
+          "pass": true,
+          "reasons": []
+        },
+        "highlightMonths": {
+          "pass": true,
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "explainResult 버전 비교",
+      "input": {
+        "mode": "explainResult",
+        "question": "V2와 V3 차이 설명해줘",
+        "versions": [
+          {
+            "versionNo": 2,
+            "title": "월 50만원",
+            "periodMonths": 12,
+            "monthlySaving": 50,
+            "events": [
+              {
+                "name": "성과급",
+                "type": "income",
+                "amount": 100,
+                "month": "2027-02",
+                "repeat": "once"
+              },
+              {
+                "name": "노트북 구입",
+                "type": "expense",
+                "amount": 150,
+                "month": "2027-05",
+                "repeat": "once"
+              }
+            ],
+            "finalAsset": 1050,
+            "increase": 550,
+            "goal": {
+              "shortfall": -50,
+              "achievementRate": 105,
+              "reachedMonth": "2027-10",
+              "extraSavingNeeded": null
+            },
+            "negativeAsset": null,
+            "declines": [
+              {
+                "month": "2027-05",
+                "delta": -100
+              }
+            ]
+          },
+          {
+            "versionNo": 3,
+            "title": "노트북 2027년 1월",
+            "periodMonths": 12,
+            "monthlySaving": 50,
+            "events": [
+              {
+                "name": "성과급",
+                "type": "income",
+                "amount": 100,
+                "month": "2027-02",
+                "repeat": "once"
+              },
+              {
+                "name": "노트북 구입",
+                "type": "expense",
+                "amount": 150,
+                "month": "2027-01",
+                "repeat": "once"
+              }
+            ],
+            "finalAsset": 1050,
+            "increase": 550,
+            "goal": {
+              "shortfall": -50,
+              "achievementRate": 105,
+              "reachedMonth": "2027-10",
+              "extraSavingNeeded": null
+            },
+            "negativeAsset": null,
+            "declines": [
+              {
+                "month": "2027-01",
+                "delta": -100
+              }
+            ]
+          }
+        ],
+        "diffs": [
+          {
+            "from": 2,
+            "to": 3,
+            "finalAsset": 0,
+            "changed": [
+              {
+                "field": "event.month",
+                "name": "노트북 구입",
+                "from": "2027-05",
+                "to": "2027-01"
+              }
+            ]
+          }
+        ]
+      },
+      "sampleOutput": {
+        "answerText": "V3는 노트북 구입을 2027년 1월로 옮긴 버전이에요. 12개월 뒤 자산은 두 버전 모두 1,050만원으로 같아요.",
+        "highlightMonths": [
+          "2027-01",
+          "2027-05"
+        ]
+      },
+      "allowedNumbers": {
+        "amountsMan": [
+          0,
+          2,
+          3,
+          50,
+          100,
+          150,
+          550,
+          1050
+        ],
+        "percents": [
+          105
+        ],
+        "months": [
+          "2027-01",
+          "2027-02",
+          "2027-05",
+          "2027-10"
+        ],
+        "periods": [
+          12
+        ],
+        "versions": [
+          2,
+          3
+        ]
+      },
+      "sampleCheck": {
+        "answerText": {
+          "pass": true,
+          "reasons": []
+        },
+        "highlightMonths": {
+          "pass": true,
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "explainTerm",
+      "input": {
+        "mode": "explainTerm",
+        "question": "단리랑 복리 차이는?",
+        "term": "단리·복리"
+      },
+      "sampleOutput": {
+        "answerText": "단리는 처음 넣은 돈에만 이자가 붙는 방식이에요. 복리는 붙은 이자에도 다시 이자가 붙는 방식이에요.",
+        "highlightMonths": []
+      },
+      "allowedNumbers": {
+        "amountsMan": [],
+        "percents": [],
+        "months": [],
+        "periods": [],
+        "versions": []
+      },
+      "sampleCheck": {
+        "answerText": {
+          "pass": true,
+          "reasons": []
+        },
+        "highlightMonths": {
+          "pass": true,
+          "reasons": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "type": "OBJECT",
+  "properties": {
+    "type": {
+      "type": "STRING",
+      "enum": [
+        "change",
+        "explain",
+        "clarify",
+        "finance",
+        "refuse"
+      ]
+    },
+    "change": {
+      "type": "OBJECT",
+      "properties": {
+        "fromVersionNo": {
+          "type": "INTEGER",
+          "nullable": true
+        },
+        "monthlySaving": {
+          "type": "OBJECT",
+          "properties": {
+            "mode": {
+              "type": "STRING",
+              "enum": [
+                "delta",
+                "absolute"
+              ]
+            },
+            "value": {
+              "type": "INTEGER"
+            }
+          },
+          "required": [
+            "mode",
+            "value"
+          ],
+          "nullable": true
+        },
+        "events": {
+          "type": "ARRAY",
+          "nullable": true,
+          "items": {
+            "type": "OBJECT",
+            "properties": {
+              "op": {
+                "type": "STRING",
+                "enum": [
+                  "add",
+                  "update",
+                  "delete"
+                ]
+              },
+              "eventId": {
+                "type": "STRING",
+                "nullable": true
+              },
+              "name": {
+                "type": "STRING",
+                "nullable": true
+              },
+              "type": {
+                "type": "STRING",
+                "enum": [
+                  "income",
+                  "expense"
+                ],
+                "nullable": true
+              },
+              "amount": {
+                "type": "INTEGER",
+                "nullable": true
+              },
+              "month": {
+                "type": "STRING",
+                "nullable": true
+              },
+              "repeat": {
+                "type": "STRING",
+                "enum": [
+                  "once",
+                  "monthly"
+                ],
+                "nullable": true
+              }
+            },
+            "required": [
+              "op"
+            ]
+          }
+        },
+        "goal": {
+          "type": "OBJECT",
+          "properties": {
+            "op": {
+              "type": "STRING",
+              "enum": [
+                "set",
+                "update",
+                "remove"
+              ]
+            },
+            "name": {
+              "type": "STRING",
+              "nullable": true
+            },
+            "amount": {
+              "type": "INTEGER",
+              "nullable": true
+            },
+            "deadline": {
+              "type": "STRING",
+              "nullable": true
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "nullable": true
+        },
+        "periodMonths": {
+          "type": "INTEGER",
+          "nullable": true
+        },
+        "solveFor": {
+          "type": "STRING",
+          "enum": [
+            "monthlySaving"
+          ],
+          "nullable": true
+        }
+      },
+      "nullable": true
+    },
+    "explain": {
+      "type": "OBJECT",
+      "properties": {
+        "kind": {
+          "type": "STRING",
+          "enum": [
+            "result",
+            "term"
+          ]
+        },
+        "versionNos": {
+          "type": "ARRAY",
+          "items": {
+            "type": "INTEGER"
+          }
+        },
+        "term": {
+          "type": "STRING",
+          "nullable": true
+        }
+      },
+      "required": [
+        "kind",
+        "versionNos"
+      ],
+      "nullable": true
+    },
+    "clarify": {
+      "type": "OBJECT",
+      "properties": {
+        "answerText": {
+          "type": "STRING"
+        },
+        "options": {
+          "type": "ARRAY",
+          "items": {
+            "type": "OBJECT",
+            "properties": {
+              "label": {
+                "type": "STRING"
+              },
+              "question": {
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "label",
+              "question"
+            ]
+          }
+        }
+      },
+      "required": [
+        "answerText",
+        "options"
+      ],
+      "nullable": true
+    },
+    "finance": {
+      "type": "OBJECT",
+      "properties": {
+        "productType": {
+          "type": "STRING",
+          "enum": [
+            "deposit",
+            "saving"
+          ],
+          "nullable": true
+        },
+        "termMonths": {
+          "type": "INTEGER",
+          "nullable": true
+        },
+        "sort": {
+          "type": "STRING",
+          "enum": [
+            "maxRate",
+            "baseRate",
+            "term"
+          ],
+          "nullable": true
+        }
+      },
+      "nullable": true
+    },
+    "refuse": {
+      "type": "OBJECT",
+      "properties": {
+        "reason": {
+          "type": "STRING",
+          "enum": [
+            "investment",
+            "product_pick",
+            "spending_advice",
+            "unrelated",
+            "prompt_injection"
+          ]
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "nullable": true
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "propertyOrdering": [
+    "type",
+    "change",
+    "explain",
+    "clarify",
+    "finance",
+    "refuse"
+  ]
+}

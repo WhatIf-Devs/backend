@@ -1,0 +1,171 @@
+{
+  "_note": "API 명세 01 비고의 골든 테스트 + AI 파트가 기대값으로 쓰는 계산. tests/reference/run_all.py가 확인한다.",
+  "cases": [
+    {
+      "name": "명세 예시",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": {
+        "series": [
+          500,
+          540,
+          580,
+          720,
+          760,
+          800,
+          690,
+          730,
+          770,
+          810,
+          850,
+          890,
+          930
+        ],
+        "finalAsset": 930,
+        "shortfall": 70,
+        "achievementRate": 93,
+        "extraSavingNeeded": 5.8,
+        "after5Years": 2850
+      }
+    },
+    {
+      "name": "월 저축 50",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 50,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-11"
+        }
+      },
+      "expect": {
+        "series": [
+          500,
+          550,
+          600,
+          750,
+          800,
+          850,
+          750,
+          800,
+          850,
+          900,
+          950,
+          1000,
+          1050
+        ],
+        "finalAsset": 1050,
+        "reachedMonth": "2027-10"
+      }
+    },
+    {
+      "name": "음수 경고",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 0,
+        "monthlySaving": 0,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": null
+      },
+      "expect": {
+        "negativeAsset": {
+          "month": "2027-05",
+          "asset": -150
+        }
+      }
+    },
+    {
+      "name": "목표 역산 (Figma V3)",
+      "condition": {
+        "startMonth": "2026-11",
+        "periodMonths": 12,
+        "currentAsset": 500,
+        "monthlySaving": 40,
+        "events": [
+          {
+            "id": "ev-1",
+            "name": "성과급",
+            "type": "income",
+            "amount": 100,
+            "month": "2027-02",
+            "repeat": "once"
+          },
+          {
+            "id": "ev-2",
+            "name": "노트북 구입",
+            "type": "expense",
+            "amount": 150,
+            "month": "2027-05",
+            "repeat": "once"
+          }
+        ],
+        "goal": {
+          "name": "유럽 여행",
+          "amount": 1000,
+          "deadline": "2027-09"
+        }
+      },
+      "expect": {
+        "solveMonthlySaving": 55
+      }
+    }
+  ]
+}

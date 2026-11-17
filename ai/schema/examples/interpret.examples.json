@@ -1,0 +1,252 @@
+{
+  "_note": "1단계 해석의 정답지 10개(설계 의도, Gemini 실제 출력 아님). 입력은 schema/fixtures/chat-requests.json + today.",
+  "today": "2026-11-16",
+  "examples": [
+    {
+      "id": 1,
+      "fixture": "goal_v1",
+      "question": "매달 10만원 더 모으면?",
+      "expected": {
+        "type": "change",
+        "change": {
+          "fromVersionNo": null,
+          "monthlySaving": {
+            "mode": "delta",
+            "value": 10
+          },
+          "events": null,
+          "goal": null,
+          "periodMonths": null,
+          "solveFor": null
+        },
+        "explain": null,
+        "clarify": null,
+        "finance": null,
+        "refuse": null
+      },
+      "note": "명세 예시. 서버 적용 후 1,050"
+    },
+    {
+      "id": 2,
+      "fixture": "goal_v1",
+      "question": "노트북을 내년 1월로 미루면?",
+      "expected": {
+        "type": "change",
+        "change": {
+          "fromVersionNo": null,
+          "monthlySaving": null,
+          "events": [
+            {
+              "op": "update",
+              "eventId": "ev-2",
+              "name": null,
+              "type": null,
+              "amount": null,
+              "month": "2027-01",
+              "repeat": null
+            }
+          ],
+          "goal": null,
+          "periodMonths": null,
+          "solveFor": null
+        },
+        "explain": null,
+        "clarify": null,
+        "finance": null,
+        "refuse": null
+      },
+      "note": "'내년' = today 2026-11-16 기준 2027"
+    },
+    {
+      "id": 3,
+      "fixture": "goal_v1",
+      "question": "노트북은 내년 1월로 미루고 매달 5만원 더 모으면?",
+      "expected": {
+        "type": "change",
+        "change": {
+          "fromVersionNo": null,
+          "monthlySaving": {
+            "mode": "delta",
+            "value": 5
+          },
+          "events": [
+            {
+              "op": "update",
+              "eventId": "ev-2",
+              "name": null,
+              "type": null,
+              "amount": null,
+              "month": "2027-01",
+              "repeat": null
+            }
+          ],
+          "goal": null,
+          "periodMonths": null,
+          "solveFor": null
+        },
+        "explain": null,
+        "clarify": null,
+        "finance": null,
+        "refuse": null
+      },
+      "note": "복합 변경도 버전 1개"
+    },
+    {
+      "id": 4,
+      "fixture": "goal_v1",
+      "question": "목표를 2개월 앞당기려면 매달 얼마 모아야 해?",
+      "expected": {
+        "type": "change",
+        "change": {
+          "fromVersionNo": null,
+          "monthlySaving": null,
+          "events": null,
+          "goal": {
+            "op": "update",
+            "name": null,
+            "amount": null,
+            "deadline": "2027-09"
+          },
+          "periodMonths": null,
+          "solveFor": "monthlySaving"
+        },
+        "explain": null,
+        "clarify": null,
+        "finance": null,
+        "refuse": null
+      },
+      "note": "엔진이 월 55만원을 구함(Figma V3). AI가 55를 쓰면 실패"
+    },
+    {
+      "id": 5,
+      "fixture": "nogoal_v1",
+      "question": "5년 뒤엔 얼마야?",
+      "expected": {
+        "type": "change",
+        "change": {
+          "fromVersionNo": null,
+          "monthlySaving": null,
+          "events": null,
+          "goal": null,
+          "periodMonths": 60,
+          "solveFor": null
+        },
+        "explain": null,
+        "clarify": null,
+        "finance": null,
+        "refuse": null
+      },
+      "note": "대안: milestones.after5Years로 explain 처리 가능 (회의 안건)"
+    },
+    {
+      "id": 6,
+      "fixture": "nogoal_v1",
+      "question": "1,500만원 목표를 세우면?",
+      "expected": {
+        "type": "clarify",
+        "change": null,
+        "explain": null,
+        "clarify": {
+          "answerText": "언제까지 모을까요?",
+          "options": [
+            {
+              "label": "6개월 뒤",
+              "question": "1,500만원 목표를 2027년 5월까지로 세우면?"
+            },
+            {
+              "label": "1년 뒤",
+              "question": "1,500만원 목표를 2027년 11월까지로 세우면?"
+            }
+          ]
+        },
+        "finance": null,
+        "refuse": null
+      },
+      "note": "목표 기한 필수. 선택지는 계산 기간 안에서만. 기본값 처리는 회의 안건"
+    },
+    {
+      "id": 7,
+      "fixture": "goal_v1",
+      "question": "5월에 왜 돈이 줄어?",
+      "expected": {
+        "type": "explain",
+        "change": null,
+        "explain": {
+          "kind": "result",
+          "versionNos": [
+            1
+          ],
+          "term": null
+        },
+        "clarify": null,
+        "finance": null,
+        "refuse": null
+      },
+      "note": "명세 예시. highlightMonths ['2027-05']"
+    },
+    {
+      "id": 8,
+      "fixture": "goal_v1",
+      "question": "더 빨리",
+      "expected": {
+        "type": "clarify",
+        "change": null,
+        "explain": null,
+        "clarify": {
+          "answerText": "몇 개월 앞당길까요?",
+          "options": [
+            {
+              "label": "1개월",
+              "question": "목표 기한을 1개월 앞당기면?"
+            },
+            {
+              "label": "2개월",
+              "question": "목표 기한을 2개월 앞당기면?"
+            },
+            {
+              "label": "3개월",
+              "question": "목표 기한을 3개월 앞당기면?"
+            }
+          ]
+        },
+        "finance": null,
+        "refuse": null
+      },
+      "note": "명세 예시 그대로"
+    },
+    {
+      "id": 9,
+      "fixture": "goal_v1",
+      "question": "내 조건에 맞는 예·적금 알려줘",
+      "expected": {
+        "type": "finance",
+        "change": null,
+        "explain": null,
+        "clarify": null,
+        "finance": {
+          "productType": null,
+          "termMonths": null,
+          "sort": null
+        },
+        "refuse": null
+      },
+      "note": "서버가 type 기본 deposit, amountMax 500, limit 3 채움"
+    },
+    {
+      "id": 10,
+      "fixture": "goal_v1",
+      "question": "어떤 적금에 가입할까?",
+      "expected": {
+        "type": "refuse",
+        "change": null,
+        "explain": null,
+        "clarify": null,
+        "finance": null,
+        "refuse": {
+          "reason": "product_pick"
+        }
+      },
+      "note": "특정 상품 선택 = 거절 (정책표 9장)"
+    }
+  ]
+}

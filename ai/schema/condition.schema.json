@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "whatif/condition.schema.json",
+  "title": "Condition",
+  "description": "API 명세 01 Body와 공통 규칙 5-1. 금액은 만원 정수. 범위는 정책표 2장. 목표 기한이 계산 기간 밖이면 CONDITION400_12.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "startMonth",
+    "periodMonths",
+    "currentAsset",
+    "monthlySaving",
+    "events"
+  ],
+  "properties": {
+    "startMonth": {
+      "type": "string",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+    },
+    "periodMonths": {
+      "type": "integer",
+      "minimum": 6,
+      "maximum": 120
+    },
+    "currentAsset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000
+    },
+    "monthlySaving": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "type",
+          "amount",
+          "month",
+          "repeat"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20
+          },
+          "type": {
+            "enum": [
+              "income",
+              "expense"
+            ]
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "month": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+          },
+          "repeat": {
+            "enum": [
+              "once",
+              "monthly"
+            ],
+            "description": "once: 그달 한 번, monthly: 그달부터 기간 끝까지 매달 (정책표 3장)"
+          }
+        }
+      }
+    },
+    "goal": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "amount",
+            "deadline"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "description": "비우면 '내 목표'"
+            },
+            "amount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "deadline": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "_note": "AI가 실패했을 때 쓰는 문장. API 명세상 03 한줄요약·02 answerText 실패 시 문장은 프론트가 계산 값으로 만든다. 04 이름 제안 실패 시 currentName 그대로. 중괄호는 SimulationResult.summary·Condition 필드.",
+  "owner": "FE (문구 기준은 AI 파트, 정책표 6·9·16장)",
+  "summaryFallback_api03": {
+    "goal_short_with_expense": "목표에 {goal.shortfall}만원 부족해요. {maxExpenseEvent.month:M}월 지출이 가장 커요.",
+    "goal_short_no_expense": "목표에 {goal.shortfall}만원 부족해요. 매달 {goal.extraSavingNeeded:money} 더 모으면 닿아요.",
+    "goal_excess": "목표를 {abs(goal.shortfall)}만원 넘겨요.",
+    "goal_exact": "목표 금액에 딱 맞게 닿아요.",
+    "goal_already": "이미 목표 금액을 넘었어요.",
+    "no_goal": "{period} 뒤 {finalAsset}만원이 돼요.",
+    "negative_first": "{negativeAsset.month:M}월에 자산이 {negativeAsset.asset}만원까지 내려가요.",
+    "rule": "negativeAsset이 있으면 negative_first를 먼저 쓴다. maxExpenseEvent = 기간 안 지출 이벤트 중 금액×횟수가 가장 큰 것"
+  },
+  "changeAnswerFallback_api02": "{versionCard.title} 조건으로 계산했어요. {period} 뒤 예상 자산은 {result.summary.finalAsset}만원이에요.",
+  "headline_policy6": {
+    "goal_short": "{goal.name}까지 {goal.shortfall}만원 부족해요",
+    "goal_excess": "{goal.name} 목표를 {abs(goal.shortfall)}만원 넘겨요",
+    "goal_exact": "{goal.name} 목표를 딱 맞게 달성해요",
+    "goal_already": "이미 목표를 넘었어요",
+    "no_goal": "지금처럼 모으면 {period} 뒤 {finalAsset}만원이 돼요"
+  },
+  "serverClarify_rangeOver": {
+    "_note": "AI가 바꾼 조건이 범위를 벗어나 서버가 clarify로 답할 때 (BE 담당, 제안 문구)",
+    "monthlySaving": "월 저축은 0~1,000만원 사이로 정할 수 있어요. 얼마로 할까요?",
+    "periodMonths": "계산 기간은 6~120개월 사이로 정할 수 있어요. 몇 년으로 볼까요?",
+    "goal.deadline": "목표 기한이 계산 기간을 벗어나요. 계산 기간을 늘려 볼까요?",
+    "events[].month": "이벤트는 다음 달부터 계산 기간 안에서만 넣을 수 있어요. 언제로 할까요?",
+    "_rule": "AI 대화에서 AI가 만든 조건이 틀리면 CONDITION400 에러가 아니라 성공 응답(type clarify)으로 답한다. CONDITION400은 프론트가 보낸 versions[].condition 자체가 틀렸을 때만."
+  },
+  "fixedTexts_server": {
+    "finance": "지금 조건으로 가입할 수 있는 공시 상품을 정리했어요. 추천이 아니라 비교용 정보예요.",
+    "refuse": "저는 입력하신 계획을 계산해서 설명해 드려요. 이런 질문은 어떠세요?",
+    "refuseExamples_goal": [
+      "월 10만원 더 모으면?",
+      "목표를 2개월 앞당기려면?",
+      "5월에 왜 돈이 줄어?"
+    ],
+    "refuseExamples_noGoal": [
+      "월 10만원 더 모으면?",
+      "5년 뒤엔 얼마야?",
+      "1,500만원 목표를 세우면?"
+    ],
+    "assumptionSentence": "이자·세금은 반영하지 않았어요."
+  },
+  "responseRules": {
+    "_source": "API 공통 규칙: 공통 응답 형태",
+    "envelope": "{isSuccess, code, message, result}",
+    "success": "isSuccess true, code는 {도메인}{HTTP 상태}_{번호}, 데이터 없으면 result null",
+    "error": "isSuccess false, result null, message는 화면에 그대로 띄우는 문구",
+    "validationError": "필드별 코드(CONDITION400_N 등), 여러 필드가 틀려도 첫 번째 하나만. code로 어느 입력창인지 알 수 있음(에러 표시 + 포커스)",
+    "formatError": "JSON 깨짐·타입 불일치·필수값 누락처럼 필드별 코드가 없는 오류는 COMMON400_1"
+  },
+  "errors_api": {
+    "_note": "message는 서버가 내려 주는 문구가 기준이고, 아래는 명세에 적힌 값. 프론트는 message를 그대로 표시",
+    "COMMON400_1": "잘못된 요청이에요.",
+    "CONDITION400_3": "현재 자산은 0~100,000만원으로 입력해 주세요.",
+    "CONDITION400_12": "목표 기한이 계산 기간을 벗어나요.",
+    "AI400_1": "질문을 입력해 주세요.",
+    "AI400_2": "질문은 200자까지 입력할 수 있어요.",
+    "AI400_3": "대화 버전 정보가 올바르지 않아요.",
+    "AI400_4": "이름 제안 정보가 올바르지 않아요.",
+    "AI422_1": "버전이 너무 많아요. 저장하거나 정리해 주세요.",
+    "AI429_1": "잠시 후 다시 물어봐 주세요.",
+    "AI503_1": "일시적인 오류로 요청을 처리하지 못했어요. 다시 한 번 물어봐 주시겠어요?",
+    "softLimit_web": "오늘 AI 질문 횟수를 모두 사용했어요."
+  },
+  "silentErrors": {
+    "_note": "화면에 에러를 띄우지 않고 폴백으로 대체하는 경우 (API 03·04 비고)",
+    "api03_AI503_1": "summaryFallback_api03 문장 표시",
+    "api04_AI503_1": "currentName을 이름 입력창에 그대로 채움",
+    "api02_answerText_null": "changeAnswerFallback_api02 문장 표시 (성공 응답 안에서 null)"
+  },
+  "format": {
+    "money": "정수는 '1,050만원', 소수(천원 단위)는 '약 5만 8천원'",
+    "period": "12의 배수면 'N년', 아니면 'N개월' 또는 'N년 M개월'",
+    "month": "같은 해면 'M월', 다른 해면 'YYYY년 M월'",
+    "josa": "이벤트 이름 뒤에 조사를 붙이지 않는 문형을 쓴다"
+  }
+}
