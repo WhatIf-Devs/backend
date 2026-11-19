@@ -1,0 +1,5 @@
+# 로컬 개발. DB는 도커 컴포즈가 연결한다.
+spring:
+  docker:
+    compose:
+      lifecycle-management: start-only

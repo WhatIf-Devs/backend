@@ -1,0 +1,16 @@
+# 로컬 개발 전용 PostgreSQL. 아래 계정·비밀번호는 로컬에서만 쓴다.
+services:
+  postgres:
+    image: 'postgres:17'
+    environment:
+      - 'TZ=Asia/Seoul'
+      - 'POSTGRES_DB=whatif'
+      - 'POSTGRES_USER=whatif'
+      - 'POSTGRES_PASSWORD=whatif-local'
+    ports:
+      - '5433:5432'  # 호스트에 설치된 PostgreSQL(5432)과 겹치지 않게 5433 사용
+    volumes:
+      - 'postgres-data:/var/lib/postgresql/data'
+
+volumes:
+  postgres-data:
